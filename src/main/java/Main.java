@@ -1,7 +1,6 @@
 import com.github.pires.obd.commands.protocol.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 
 public class Main {
@@ -10,9 +9,18 @@ public class Main {
         Socket socket;
         try {
             socket = new Socket("192.168.0.10", 35000);
-            InputStream inputStream = socket.getInputStream();
 
-            /*IgnitionMonitorCommand ignitionMonitorCommand = new IgnitionMonitorCommand();
+            DescribeProtocolCommand describeProtocolCommand = new DescribeProtocolCommand();
+            describeProtocolCommand.run(socket.getInputStream(), socket.getOutputStream());
+            System.out.println("Protocol: " + describeProtocolCommand.getResult());
+
+            socket.close();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    /*IgnitionMonitorCommand ignitionMonitorCommand = new IgnitionMonitorCommand();
             ignitionMonitorCommand.run(inputStream, socket.getOutputStream());
             System.out.println("Ignition on: " + ignitionMonitorCommand.isIgnitionOn());*/
 
@@ -32,15 +40,11 @@ public class Main {
             vinCommand.run(socket.getInputStream(), socket.getOutputStream());
             System.out.println("Vin: " + vinCommand.getResult());*/
 
-            DescribeProtocolCommand describeProtocolCommand = new DescribeProtocolCommand();
-            describeProtocolCommand.run(socket.getInputStream(), socket.getOutputStream());
-            System.out.println("Protocol: " + describeProtocolCommand.getResult());
-
-            /*AirIntakeTemperatureCommand airTemperatureCommand = new AirIntakeTemperatureCommand();
+    /*AirIntakeTemperatureCommand airTemperatureCommand = new AirIntakeTemperatureCommand();
             airTemperatureCommand.run(socket.getInputStream(), socket.getOutputStream());
             System.out.println("Temp: " + airTemperatureCommand.getTemperature());*/
 
-            AvailablePidsCommand availablePidsCommand = new AvailablePidsCommand_01_20();
+            /*AvailablePidsCommand availablePidsCommand = new AvailablePidsCommand_01_20();
             System.out.println(availablePidsCommand.getCommandPID());
             availablePidsCommand.run(socket.getInputStream(), socket.getOutputStream());
             System.out.println("Pids 01-20: " + availablePidsCommand.getResult());
@@ -51,11 +55,5 @@ public class Main {
 
             availablePidsCommand = new AvailablePidsCommand_41_60();
             availablePidsCommand.run(socket.getInputStream(), socket.getOutputStream());
-            System.out.println("Pids 41-60: " + availablePidsCommand.getResult());
-
-            socket.close();
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
+            System.out.println("Pids 41-60: " + availablePidsCommand.getResult());*/
 }
